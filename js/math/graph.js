@@ -18,6 +18,35 @@ class Graph {
   containsPoint(point) {
     return this.points.find((p) => p.equals(point));
   }
+
+  addSegment(seg) {
+    this.segments.push(seg);
+  }
+
+  containsSegment(seg) {
+    return this.segments.find((s) => s.equals(seg));
+  }
+
+  tryAddSegment(seg) {
+    if (!this.containsSegment(seg) && !seg.p1.equals(seg.p2)) {
+      this.addSegment(seg);
+      return true;
+    }
+    return false;
+  }
+
+  removeSegment(seg) {
+    this.segments.splice(this.segments.indexOf(seg), 1);
+  }
+
+  removePoint(point) {
+    const segs = this.getSegmentsWithPoint(point);
+    for (const seg of segs) {
+      this.removeSegment(seg);
+    }
+
+    this.points.splice(this.points.indexOf(point), 1);
+  }
   draw(ctx) {
     for (const seg of this.segments) {
       seg.draw(ctx);
